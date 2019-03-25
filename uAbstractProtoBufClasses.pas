@@ -45,14 +45,14 @@ type
     constructor Create; virtual;
     destructor Destroy; override;
 
-    procedure Assign(ProtoBuf: TAbstractProtoBufClass);
-
     procedure LoadFromMem(const Mem: Pointer; const Size: Integer; const OwnsMem: Boolean = False);
     procedure LoadFromStream(Stream: TStream);
     procedure SaveToStream(Stream: TStream);
 
     procedure LoadFromBuf(ProtoBuf: TProtoBufInput);
     procedure SaveToBuf(ProtoBuf: TProtoBufOutput);
+
+    function Copy: TAbstractProtoBufClass;
 
     function AllRequiredFieldsValid: Boolean;
 
@@ -68,6 +68,12 @@ type
     function AddFromBuf(ProtoBuf: TProtoBufInput; FieldNum: integer): Boolean; virtual;
     procedure SaveToBuf(ProtoBuf: TProtoBufOutput; FieldNumForItems: integer); virtual;
   end;
+
+  //ideally TAbstractProtoBufClass would be called TProtoBufMessage, so create an alias
+  //for future code to use
+  TProtoBufMessage = TAbstractProtoBufClass;
+
+  TProtoBufMessageClass = class of TAbstractProtoBufClass;
 
 implementation
 
@@ -111,20 +117,6 @@ begin
 
 end;
 
-procedure TAbstractProtoBufClass.Assign(ProtoBuf: TAbstractProtoBufClass);
-var
-  Stream: TStream;
-begin
-  Stream := TMemoryStream.Create;
-  try
-    ProtoBuf.SaveToStream(Stream);
-    Stream.Seek(0, soBeginning);
-    LoadFromStream(Stream);
-  finally
-    Stream.Free;
-  end;
-end;
-
 procedure TAbstractProtoBufClass.BeforeLoad;
 {$IFDEF FPC}
 var
@@ -150,6 +142,21 @@ begin
 {$ELSE}
   FFieldStates.AddOrSetValue(Tag, GetFieldState(Tag) - AFieldState);
 {$ENDIF}
+end;
+
+function TAbstractProtoBufClass.Copy: TAbstractProtoBufClass;
+var
+  Stream: TStream;
+begin
+  Result:= TProtoBufMessageClass(Self.ClassType).Create;
+  Stream:= TMemoryStream.Create;
+  try
+    SaveToStream(Stream);
+    Stream.Seek(0, soBeginning);
+    Result.LoadFromStream(Stream);
+  finally
+    Stream.Free;
+  end;
 end;
 
 constructor TAbstractProtoBufClass.Create;

@@ -98,6 +98,8 @@
         <DCCReference Include="..\..\StrBuffer.pas"/>
         <DCCReference Include="TestuProtoBufGenerator.pas"/>
         <DCCReference Include="TestuProtoBufRawIO.pas"/>
+        <DCCReference Include="TestuAbstractProtoBufClasses.pas"/>
+        <DCCReference Include="test1.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

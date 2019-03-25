@@ -26,7 +26,9 @@ uses
   pbPublic in '..\..\pbPublic.pas',
   StrBuffer in '..\..\StrBuffer.pas',
   TestuProtoBufGenerator in 'TestuProtoBufGenerator.pas',
-  TestuProtoBufRawIO in 'TestuProtoBufRawIO.pas';
+  TestuProtoBufRawIO in 'TestuProtoBufRawIO.pas',
+  TestuAbstractProtoBufClasses in 'TestuAbstractProtoBufClasses.pas',
+  test1 in 'test1.pas';
 
 {R *.RES}
 
