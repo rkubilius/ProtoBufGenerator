@@ -410,10 +410,12 @@ procedure TProtoBufGenerator.GenerateImplementationSection(Proto: TProtoFile; SL
                 SL.Add(Format('%sF%s.AddFromBuf(ProtoBuf, fieldNumber);', [sIndent, DelphiProp.PropertyName]));
           end;
         if Prop.OneOfPropertyParent <> nil then
-        begin
-          ParsePropType(Prop.OneOfPropertyParent, Proto, OneOfDelphiProp);
-          SL.Add(Format('%s%s:= %s_%s_%s;', [sIndent, OneOfDelphiProp.PropertyName, ProtoMsg.Name, OneOfDelphiProp.PropertyName, DelphiProp.PropertyName]));
-        end;
+          //GitHub issue #30: extra oneOf setter is not necessary if property setter was used
+          if DelphiProp.IsList or DelphiProp.isComplex or DelphiProp.isObject then
+          begin
+            ParsePropType(Prop.OneOfPropertyParent, Proto, OneOfDelphiProp);
+            SL.Add(Format('%s%s:= %s_%s_%s;', [sIndent, OneOfDelphiProp.PropertyName, ProtoMsg.Name, OneOfDelphiProp.PropertyName, DelphiProp.PropertyName]));
+          end;
         if SL.Count = iBeginBlock + 2 then
         begin
           //we added only begin and one extra line, so remove begin block and
