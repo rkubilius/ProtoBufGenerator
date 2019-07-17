@@ -200,7 +200,7 @@ begin
       if DelphiProp.isObject then
         DelphiProp.PropertyType := Format('TProtoBufClassList<%s>', [ProtoPropTypeToDelphiType(Prop.PropType)])
       else
-        DelphiProp.PropertyType := Format('TList<%s>', [ProtoPropTypeToDelphiType(Prop.PropType)]);
+        DelphiProp.PropertyType := Format('TPBList<%s>', [ProtoPropTypeToDelphiType(Prop.PropType)]);
     end;
 
 end;
@@ -638,8 +638,6 @@ begin
 end;
 
 procedure TProtoBufGenerator.GenerateInterfaceSection(Proto: TProtoFile; SL: TStrings);
-var
-  bNeedsGenericsCollection: Boolean;
 
   procedure WriteBeforeComments(AComments, SL: TStrings; const Indent: string = '  ');
   var
@@ -760,10 +758,6 @@ var
       begin
         Prop := ProtoMsg[i];
         ParsePropType(Prop, Proto, DelphiProp);
-        //we need Generics.Collection if TList<> is used, but not for
-        //TProtoBufClassList, which is defined in uAbstractProtoBufClasses
-        if DelphiProp.IsList and (not DelphiProp.IsObject) then
-          bNeedsGenericsCollection:= True;
         for j:= 0 to Prop.Comments.Count - 1 do
           SL.Add('    //' + Prop.Comments[j]);
         if DelphiProp.readOnlyDelphiProperty then
@@ -800,7 +794,7 @@ var
   end;
 
 var
-  i, iGenericsCollectionUses: Integer;
+  i: Integer;
 begin
   SL.Add(Format('unit %s;', [Proto.Name]));
   SL.Add('');
@@ -815,8 +809,6 @@ begin
   SL.Add('uses');
   SL.Add('  SysUtils,');
   SL.Add('  Classes,');
-  iGenericsCollectionUses:= SL.Count;
-  bNeedsGenericsCollection:= False;
   SL.Add('  pbInput,');
   SL.Add('  pbOutput,');
   SL.Add('  pbPublic,');
@@ -846,9 +838,6 @@ begin
         WriteMessageToSL(Proto.ProtoBufMessages[i], SL);
         SL.Add('');
       end;
-
-  if bNeedsGenericsCollection then
-    SL.Insert(iGenericsCollectionUses, '  Generics.Collections,');
 end;
 
 procedure TProtoBufGenerator.Generate(const InputFile, OutputDir: string; Encoding: TEncoding);

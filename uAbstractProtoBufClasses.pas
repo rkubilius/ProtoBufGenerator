@@ -75,6 +75,12 @@ type
 
   TProtoBufMessageClass = class of TAbstractProtoBufClass;
 
+  {$IFDEF FPC}
+  TPBList<T> = class(TFPGList<T>);
+  {$ELSE}
+  TPBList<T> = class(TList<T>);
+  {$ENDIF}
+
 implementation
 
 uses
