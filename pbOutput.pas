@@ -52,6 +52,10 @@ type
     procedure writeFixed64(fieldNumber: integer; value: int64);
     (* Write a fixed32 field, including tag. *)
     procedure writeFixed32(fieldNumber: integer; value: integer);
+    (* Write a sfixed64 field, including tag. *)
+    procedure writeSFixed64(fieldNumber: integer; value: int64);
+    (* Write a sfixed32 field, including tag. *)
+    procedure writeSFixed32(fieldNumber: integer; value: integer);
     (* Write a boolean field, including tag. *)
     procedure writeRawBoolean(value: Boolean);
     procedure writeBoolean(fieldNumber: integer; value: Boolean);
@@ -251,6 +255,18 @@ procedure TProtoBufOutput.writeInt64(fieldNumber: integer; value: int64);
 begin
   writeTag(fieldNumber, WIRETYPE_VARINT);
   writeRawVarint64(value);
+end;
+
+procedure TProtoBufOutput.writeSFixed32(fieldNumber, value: integer);
+begin
+  writeTag(fieldNumber, WIRETYPE_FIXED32);
+  writeRawData(@value, SizeOf(value));
+end;
+
+procedure TProtoBufOutput.writeSFixed64(fieldNumber: integer; value: int64);
+begin
+  writeTag(fieldNumber, WIRETYPE_FIXED64);
+  writeRawData(@value, SizeOf(value));
 end;
 
 procedure TProtoBufOutput.writeSInt32(fieldNumber, value: integer);
