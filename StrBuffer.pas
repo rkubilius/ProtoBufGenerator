@@ -66,9 +66,9 @@ type
   TSegmentBuffer = class
   private
     FCount: Integer;
-    FCapacity: Integer;
     FFirst: PSegment;
     FLast: PSegment;
+    function AllocateSegment(aSize: Integer): PSegment;
   protected
     class procedure Error(const Msg: string; Data: Integer);
   public
@@ -220,20 +220,14 @@ constructor TSegmentBuffer.Create;
 begin
   inherited Create;
   FCount := 0;
-  FFirst := AllocMem(4096 + SizeOf(TSegment));
-  with FFirst^ do
-    begin
-      Next := nil;
-      Size := 4096;
-      Count := 0;
-    end;
+  FFirst := AllocateSegment(4096);
   FLast := FFirst;
 end;
 
 destructor TSegmentBuffer.Destroy;
 begin
   Clear;
-  FreeMem(FFirst, FFirst^.Size);
+  FreeMem(FFirst);
   inherited Destroy;
 end;
 
@@ -246,27 +240,28 @@ begin
     begin
       p2 := p1;
       p1 := p1^.Next;
-      FreeMem(p2, p2^.Size);
+      FreeMem(p2);
     end;
   FFirst := FLast;
   FFirst^.Count := 0;
   FCount := 0;
 end;
 
+function TSegmentBuffer.AllocateSegment(aSize: Integer): PSegment;
+begin
+  Result:= AllocMem(SizeOf(TSegment) + aSize - 1);
+  Result^.Next:= nil;
+  Result^.Size:= aSize;
+  Result^.Count:= 0;
+end;
+
 procedure TSegmentBuffer.AddSegment(aSize: Integer);
 var
   segment: PSegment;
 begin
-  segment := AllocMem(aSize + SizeOf(TSegment) - SizeOf(AnsiChar));
-  with segment^ do
-    begin
-      Next := nil;
-      Size := aSize;
-      Count := 0;
-    end;
+  segment := AllocateSegment(aSize);
   FLast^.Next := segment;
   FLast := segment;
-  Inc(FCapacity, aSize);
 end;
 
 function TSegmentBuffer.GetCount: Integer;
