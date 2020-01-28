@@ -144,7 +144,7 @@ procedure TAbstractProtoBufClass.ClearFieldState(Tag: Integer;
   AFieldState: TFieldState);
 begin
 {$IFDEF FPC}
-  FFieldStates[Tag]:= GetFieldState(Tag);
+  FFieldStates[Tag]:= GetFieldState(Tag) - AFieldState;
 {$ELSE}
   FFieldStates.AddOrSetValue(Tag, GetFieldState(Tag) - AFieldState);
 {$ENDIF}

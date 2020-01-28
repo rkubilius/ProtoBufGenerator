@@ -35,6 +35,7 @@ type
     procedure TearDown; override;
   published
     procedure TestSaveLoadFromBuf;
+    procedure TestFieldHasValue;
   end;
 
 implementation
@@ -109,6 +110,22 @@ begin
   end;
 end;
 
+procedure TestTTestMsg1.TestFieldHasValue;
+begin
+  Check(FTestMsg1.FieldHasValue[TTestMsg1.tag_DefField1], 'FieldHasValue for DefField1 should be initially True since it has a Default value');
+  FTestMsg1.FieldHasValue[TTestMsg1.tag_DefField1]:= False;
+  Check(not FTestMsg1.FieldHasValue[TTestMsg1.tag_DefField1], 'FieldHasValue for DefField1 should be False after explicitly setting it');
+  FTestMsg1.DefField1 := 1;
+  Check(FTestMsg1.FieldHasValue[TTestMsg1.tag_DefField1], 'FieldHasValue for DefField1 should be set to True by generated Setter');
+
+  Check(not FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List], 'FieldHasValue for FieldArr1List should be initially False');
+  FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List]:= True;
+  Check(FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List], 'FieldHasValue for FieldArr1List should be True after explicitly setting it');
+  //not really required for Test:
+  //FTestMsg1.FieldArr2List.Add(234);
+  FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List]:= False;
+  Check(not FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List], 'FieldHasValue for FieldArr1List not cleared after explicitly setting it to False');
+end;
 
 initialization
   // Register any test cases with the test runner
