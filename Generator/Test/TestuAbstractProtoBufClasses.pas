@@ -6,7 +6,7 @@ uses
   {$IFDEF FPC}
   fpcunit, testregistry,
   {$ELSE}
-  System.Generics.Collections,
+  TestFramework,
   {$ENDIF}
   uAbstractProtoBufClasses,
   SysUtils,

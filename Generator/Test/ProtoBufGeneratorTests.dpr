@@ -28,7 +28,8 @@ uses
   TestuProtoBufGenerator in 'TestuProtoBufGenerator.pas',
   TestuProtoBufRawIO in 'TestuProtoBufRawIO.pas',
   TestuAbstractProtoBufClasses in 'TestuAbstractProtoBufClasses.pas',
-  test1 in 'test1.pas';
+  test1 in 'test1.pas',
+  TestGeneratedProtoBufPas in 'TestGeneratedProtoBufPas.pas';
 
 {R *.RES}
 
