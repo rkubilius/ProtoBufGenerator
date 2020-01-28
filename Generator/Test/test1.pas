@@ -11,7 +11,6 @@ interface
 uses
   SysUtils,
   Classes,
-  Generics.Collections,
   pbInput,
   pbOutput,
   pbPublic,
@@ -76,9 +75,9 @@ type
     FDefField8: Integer;
     FDefField9: Single;
     FFieldMsg1: TTestMsg0;
-    FFieldArr1List: TList<Integer>;
-    FFieldArr2List: TList<Integer>;
-    FFieldArr3List: TList<string>;
+    FFieldArr1List: TPBList<Integer>;
+    FFieldArr2List: TPBList<Integer>;
+    FFieldArr3List: TPBList<string>;
     FFieldMArr2List: TProtoBufClassList<TNestedMsg0>;
 
     procedure SetDefField1(Tag: Integer; const Value: Integer);
@@ -109,9 +108,9 @@ type
     property DefField9: Single index tag_DefField9 read FDefField9 write SetDefField9; // default 1.23e1;
     property FieldMsg1: TTestMsg0 read FFieldMsg1;
     //repeated fields
-    property FieldArr1List: TList<Integer> read FFieldArr1List;
-    property FieldArr2List: TList<Integer> read FFieldArr2List;
-    property FieldArr3List: TList<string> read FFieldArr3List;
+    property FieldArr1List: TPBList<Integer> read FFieldArr1List;
+    property FieldArr2List: TPBList<Integer> read FFieldArr2List;
+    property FieldArr3List: TPBList<string> read FFieldArr3List;
     property FieldMArr2List: TProtoBufClassList<TNestedMsg0> read FFieldMArr2List;
   end;
 
@@ -173,9 +172,9 @@ begin
   DefField8 := 1;
   DefField9 := 1.23e1;
   FFieldMsg1 := TTestMsg0.Create;
-  FFieldArr1List := TList<Integer>.Create;
-  FFieldArr2List := TList<Integer>.Create;
-  FFieldArr3List := TList<string>.Create;
+  FFieldArr1List := TPBList<Integer>.Create;
+  FFieldArr2List := TPBList<Integer>.Create;
+  FFieldArr3List := TPBList<string>.Create;
   FFieldMArr2List := TProtoBufClassList<TNestedMsg0>.Create;
 end;
 
@@ -280,6 +279,7 @@ begin
         ProtoBuf.writeInt32(tag_FieldArr1List, FFieldArr1List[i]);
     if FieldHasValue[tag_FieldArr2List] then
     begin
+      tmpBuf.Clear;
       for i := 0 to FFieldArr2List.Count-1 do
         tmpBuf.writeRawVarint32(FFieldArr2List[i]);
       ProtoBuf.writeMessage(tag_FieldArr2List, tmpBuf);

@@ -3,7 +3,11 @@ unit TestuAbstractProtoBufClasses;
 interface
 
 uses
-  TestFramework,
+  {$IFDEF FPC}
+  fpcunit, testregistry,
+  {$ELSE}
+  System.Generics.Collections,
+  {$ENDIF}
   uAbstractProtoBufClasses,
   SysUtils,
   Classes;
@@ -67,5 +71,5 @@ begin
 end;
 
 initialization
-  RegisterTest(TestTAbstractProtoBufClass.Suite);
+  RegisterTest('uAbstractProtBufClasses', TestTAbstractProtoBufClass.Suite);
 end.

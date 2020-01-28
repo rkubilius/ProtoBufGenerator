@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="20">
+      <Unit0>
+        <Filename Value="ProtoBufGeneratorTestsFPC.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="4"/>
+        <CursorPos Y="5"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="TestGeneratedProtoBufPas.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="1"/>
+        <TopLine Value="47"/>
+        <CursorPos X="87" Y="63"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="TestuAbstractProtoBufClasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <TopLine Value="38"/>
+        <CursorPos Y="5"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="TestuProtoBufGenerator.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="20"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="TestuProtoBufParserClasses.pas"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="5"/>
+        <TopLine Value="49"/>
+        <CursorPos X="25" Y="68"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="../../pbInput.pas"/>
+        <IsPartOfProject Value="True"/>
+        <IsVisibleTab Value="True"/>
+        <EditorIndex Value="7"/>
+        <TopLine Value="9"/>
+        <CursorPos X="53" Y="24"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="../../pbOutput.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="25"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="../../pbPublic.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="25"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="../../StrBuffer.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="33" Y="104"/>
+        <UsageCount Value="25"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="../../uAbstractProtoBufClasses.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="145"/>
+        <CursorPos X="73" Y="148"/>
+        <UsageCount Value="25"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="testcase1.pas"/>
+        <UnitName Value="TestCase1"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="4"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="test1.pas"/>
+        <EditorIndex Value="3"/>
+        <TopLine Value="156"/>
+        <CursorPos Y="164"/>
+        <UsageCount Value="22"/>
+        <Loaded Value="True"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="/usr/local/share/fpcsrc/packages/fcl-fpcunit/src/testutils.pp"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="../uProtoBufParserAbstractClasses.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="76" Y="6"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="../uProtoBufParserClasses.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="15" Y="5"/>
+        <UsageCount Value="20"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="/usr/local/share/fpcsrc/rtl/bsd/system.pp"/>
+        <UnitName Value="System"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="114" Y="10"/>
+        <UsageCount Value="10"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="/usr/local/share/fpcsrc/packages/fcl-fpcunit/src/DUnitCompatibleInterface.inc"/>
+        <EditorIndex Value="6"/>
+        <TopLine Value="160"/>
+        <CursorPos X="6" Y="170"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="/Developer/lazarus/components/lazutils/graphtype.pp"/>
+        <UnitName Value="GraphType"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="465"/>
+        <CursorPos X="41" Y="484"/>
+        <UsageCount Value="10"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="/usr/local/share/fpcsrc/packages/fcl-fpcunit/src/fpcunit.pp"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos Y="8"/>
+        <UsageCount Value="10"/>
+      </Unit19>
+    </Units>
+    <JumpHistory Count="25" HistoryIndex="24">
+      <Position1>
+        <Filename Value="/usr/local/share/fpcsrc/packages/fcl-fpcunit/src/DUnitCompatibleInterface.inc"/>
+        <Caret Line="170" Column="6" TopLine="160"/>
+      </Position1>
+      <Position2>
+        <Filename Value="../../pbInput.pas"/>
+        <Caret Line="178" TopLine="158"/>
+      </Position2>
+      <Position3>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="622" Column="61" TopLine="590"/>
+      </Position3>
+      <Position4>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="601" TopLine="590"/>
+      </Position4>
+      <Position5>
+        <Filename Value="../../pbInput.pas"/>
+        <Caret Line="178" Column="12" TopLine="158"/>
+      </Position5>
+      <Position6>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="611" Column="85" TopLine="596"/>
+      </Position6>
+      <Position7>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="48" Column="28" TopLine="30"/>
+      </Position7>
+      <Position8>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="316" Column="69" TopLine="306"/>
+      </Position8>
+      <Position9>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+      </Position9>
+      <Position10>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="52" Column="24" TopLine="20"/>
+      </Position10>
+      <Position11>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="292" Column="26" TopLine="279"/>
+      </Position11>
+      <Position12>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="43" Column="15" TopLine="34"/>
+      </Position12>
+      <Position13>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="628" TopLine="599"/>
+      </Position13>
+      <Position14>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="67" TopLine="39"/>
+      </Position14>
+      <Position15>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="636" Column="58" TopLine="606"/>
+      </Position15>
+      <Position16>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+      </Position16>
+      <Position17>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="189" Column="55" TopLine="157"/>
+      </Position17>
+      <Position18>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="300" Column="56" TopLine="290"/>
+      </Position18>
+      <Position19>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="180" Column="63" TopLine="170"/>
+      </Position19>
+      <Position20>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="299" Column="65" TopLine="282"/>
+      </Position20>
+      <Position21>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="14" Column="63"/>
+      </Position21>
+      <Position22>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="68" Column="22" TopLine="37"/>
+      </Position22>
+      <Position23>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="63" Column="42" TopLine="37"/>
+      </Position23>
+      <Position24>
+        <Filename Value="TestuProtoBufRawIO.pas"/>
+        <Caret Line="261" Column="71" TopLine="252"/>
+      </Position24>
+      <Position25>
+        <Filename Value="../../pbInput.pas"/>
+        <Caret Line="17" Column="36" TopLine="9"/>
+      </Position25>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>

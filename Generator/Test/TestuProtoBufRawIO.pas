@@ -1,4 +1,4 @@
-﻿unit TestuProtoBufRawIO;
+unit TestuProtoBufRawIO;
 {
 
   Delphi DUnit Test Case
@@ -12,7 +12,11 @@
 interface
 
 uses
+  {$IFDEF FPC}
+  fpcunit, testregistry,
+  {$ELSE}
   TestFramework,
+  {$ENDIF}
   Classes,
   SysUtils;
 
@@ -42,7 +46,6 @@ type
     procedure TestDecodeZigZag;
     procedure TestEncodeDecodeZigZag;
     procedure TestManuallyGeneratedMessageBuffer;
-    procedure TestMemoryLeak;
     procedure TestReadTag;
     procedure TestReadString;
     procedure TestReadStringError;
@@ -58,6 +61,13 @@ uses
   pbPublic,
   pbInput,
   pbOutput;
+
+type
+{$IFNDEF PB_USE_ASSERTS}
+  ExpectedPBException = EPBInputException;
+{$ELSE}
+  ExpectedPBException = EAssertionFailed;
+{$ENDIF}
 
 procedure TestProtoBufRawIO.SetUp;
 begin
@@ -113,8 +123,9 @@ begin
   j := EncodeZigZag32(i);
   CheckEquals(i, decodeZigZag32(j), 'ZigZag32 symmetry error');
 
-  for i64 := -50000 to 50000 do
+  for i := -50000 to 50000 do
     begin
+      i64:= i;
       j64 := EncodeZigZag64(i64);
       CheckEquals(i64, decodeZigZag64(j64), 'ZigZag64 symmetry error');
     end;
@@ -122,24 +133,6 @@ begin
   i64 := $7FFFFFFFFFFFFFFF;
   j64 := EncodeZigZag64(i64);
   CheckEquals(i64, decodeZigZag64(j64), 'ZigZag64 symmetry error');
-end;
-
-procedure TestProtoBufRawIO.TestMemoryLeak;
-const
-  Mb = 1024 * 1024;
-var
-  in_pb: TProtoBufInput;
-  buf_size: integer;
-  s: AnsiString;
-  i: integer;
-begin
-  buf_size := 64 * Mb;
-  SetLength(s, buf_size);
-  for i := 0 to 200 do
-    begin
-      in_pb := TProtoBufInput.Create(PAnsiChar(s), Length(s), false);
-      in_pb.Free;
-    end;
 end;
 
 procedure TestProtoBufRawIO.TestReadBytes;
@@ -173,8 +166,8 @@ end;
 
 procedure TestProtoBufRawIO.TestReadBytesErrors;
 begin
-  CheckException(InputErrorBytesNegativeSize, Exception, 'negative size must cause Exception in .readBytes');
-  CheckException(InputErrorBytesEOF, Exception, 'negative size must cause Exception in .readBytes');
+  CheckException(InputErrorBytesNegativeSize, ExpectedPBException, 'negative size must cause Exception in .readBytes');
+  CheckException(InputErrorBytesEOF, ExpectedPBException, 'negative size must cause Exception in .readBytes');
 end;
 
 procedure TestProtoBufRawIO.TestReadLittleEndian32;
@@ -284,8 +277,8 @@ end;
 
 procedure TestProtoBufRawIO.TestReadStringError;
 begin
-  CheckException(InputErrorStringNegativeSize, Exception, 'String with negative size -255 must cause an exception');
-  CheckException(InputErrorStringEOF, Exception, 'negative size must cause Exception in .readString');
+  CheckException(InputErrorStringNegativeSize, ExpectedPBException, 'String with negative size -255 must cause an exception');
+  CheckException(InputErrorStringEOF, ExpectedPBException, 'negative size must cause Exception in .readString');
 end;
 
 procedure TestProtoBufRawIO.TestManuallyGeneratedMessageBuffer;
@@ -302,40 +295,49 @@ var
   int: integer;
   dbl: double;
   flt: single;
+  memStream: TMemoryStream;
 begin
   out_pb := TProtoBufOutput.Create;
-  out_pb.writeString(1, TEST_string);
-  out_pb.writeFixed32(2, TEST_integer);
-  out_pb.writeFloat(3, TEST_single);
-  out_pb.writeDouble(4, TEST_double);
-  out_pb.SaveToFile('test.dmp');
-
   in_pb := TProtoBufInput.Create();
-  in_pb.LoadFromFile('test.dmp');
-  // TEST_string
-  tag := makeTag(1, WIRETYPE_LENGTH_DELIMITED);
-  t := in_pb.readTag;
-  CheckEquals(tag, t);
-  text := in_pb.readString;
-  CheckEquals(TEST_string, text);
-  // TEST_integer
-  tag := makeTag(2, WIRETYPE_FIXED32);
-  t := in_pb.readTag;
-  CheckEquals(tag, t);
-  int := in_pb.readFixed32;
-  CheckEquals(TEST_integer, int);
-  // TEST_single
-  tag := makeTag(3, WIRETYPE_FIXED32);
-  t := in_pb.readTag;
-  CheckEquals(tag, t);
-  flt := in_pb.readFloat;
-  CheckEquals(TEST_single, flt, 0.001);
-  // TEST_double
-  tag := makeTag(4, WIRETYPE_FIXED64);
-  t := in_pb.readTag;
-  CheckEquals(tag, t);
-  dbl := in_pb.readDouble;
-  CheckEquals(TEST_double, dbl, 0.000001);
+  memStream := TMemoryStream.Create();
+  try
+    out_pb.writeString(1, TEST_string);
+    out_pb.writeFixed32(2, TEST_integer);
+    out_pb.writeFloat(3, TEST_single);
+    out_pb.writeDouble(4, TEST_double);
+    out_pb.SaveToStream(memStream);
+
+    memStream.Position:= 0;
+    in_pb.LoadFromStream(memStream);
+    // TEST_string
+    tag := makeTag(1, WIRETYPE_LENGTH_DELIMITED);
+    t := in_pb.readTag;
+    CheckEquals(tag, t);
+    text := in_pb.readString;
+    CheckEquals(TEST_string, text);
+    // TEST_integer
+    tag := makeTag(2, WIRETYPE_FIXED32);
+    t := in_pb.readTag;
+    CheckEquals(tag, t);
+    int := in_pb.readFixed32;
+    CheckEquals(TEST_integer, int);
+    // TEST_single
+    tag := makeTag(3, WIRETYPE_FIXED32);
+    t := in_pb.readTag;
+    CheckEquals(tag, t);
+    flt := in_pb.readFloat;
+    CheckEquals(TEST_single, flt, 0.001);
+    // TEST_double
+    tag := makeTag(4, WIRETYPE_FIXED64);
+    t := in_pb.readTag;
+    CheckEquals(tag, t);
+    dbl := in_pb.readDouble;
+    CheckEquals(TEST_double, dbl, 0.000001);
+  finally
+    memStream.Free;
+    in_pb.Free;
+    out_pb.Free;
+  end;
 end;
 
 procedure TestProtoBufRawIO.TestReadTag;
@@ -612,11 +614,11 @@ end;
 
 procedure TestProtoBufRawIO.TestVarintErrors;
 begin
-  CheckException(InputErrorVarInt32EOF, Exception, 'VarInt32 unexpected EOF after 2 bytes');
-  CheckException(InputErrorVarInt32Unterminated, Exception, 'VarInt32 with 10 bytes and last msb set');
-  CheckException(InputErrorVarInt32ToLong, Exception, 'VarInt32 which has more than 5 bytes must cause an exception');
+  CheckException(InputErrorVarInt32EOF, ExpectedPBException, 'VarInt32 unexpected EOF after 2 bytes');
+  CheckException(InputErrorVarInt32Unterminated, ExpectedPBException, 'VarInt32 with 10 bytes and last msb set');
+  CheckException(InputErrorVarInt32ToLong, ExpectedPBException, 'VarInt32 which has more than 5 bytes must cause an exception');
 end;
 
 initialization
-  RegisterTest(TestProtoBufRawIO.Suite);
+  RegisterTest('ProtoBufRawIO', TestProtoBufRawIO.Suite);
 end.

@@ -12,27 +12,20 @@ unit TestGeneratedProtoBufPas;
 interface
 
 uses
+  {$IFDEF FPC}
+  fpcunit, testregistry,
+  {$ELSE}
   TestFramework,
   System.Generics.Collections,
-  pbPublic,
-  pbOutput,
+  {$ENDIF}
   uAbstractProtoBufClasses,
   test1,
-  pbInput,
-  System.Classes;
+  Classes;
 
 type
-  // Test methods for class TTestMsg0
-
-  TestTTestMsg0 = class(TTestCase)
-  strict private
-    FTestMsg0: TTestMsg0;
-  public
-    procedure SetUp; override;
-    procedure TearDown; override;
-  published
-  end;
   // Test methods for class TTestMsg1
+
+  { TestTTestMsg1 }
 
   TestTTestMsg1 = class(TTestCase)
   strict private
@@ -45,17 +38,6 @@ type
   end;
 
 implementation
-
-procedure TestTTestMsg0.SetUp;
-begin
-  FTestMsg0 := TTestMsg0.Create;
-end;
-
-procedure TestTTestMsg0.TearDown;
-begin
-  FTestMsg0.Free;
-  FTestMsg0 := nil;
-end;
 
 procedure TestTTestMsg1.SetUp;
 begin
@@ -76,7 +58,7 @@ var
 begin
   FTestMsg1.DefField1 := 1;
   FTestMsg1.DefField2 := 3;
-  FTestMsg1.DefField3 := 'asÙ‚‡ÛˆÈ';
+  FTestMsg1.DefField3 := 'as√¥√¢√†√≥√∂√©';
   FTestMsg1.DefField4 := -2.5;
   FTestMsg1.DefField5 := True;
   FTestMsg1.DefField6 := TEnumG0.g2;
@@ -84,8 +66,11 @@ begin
   FTestMsg1.DefField8 := -45432;
   FTestMsg1.DefField9 := 5.5;
   FTestMsg1.FieldArr1List.Add(-5);
+  FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List]:= True;
   FTestMsg1.FieldArr2List.Add(234);
-  FTestMsg1.FieldArr3List.Add('asdfÁˆÛÍ„¯Ú');
+  FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr2List]:= True;
+  FTestMsg1.FieldArr3List.Add('asdf√ß√∂√≥√™√£√∏√≤');
+  FTestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr3List]:= True;
 
   tmp := TTestMsg1.Create;
   try
@@ -124,10 +109,8 @@ begin
   end;
 end;
 
+
 initialization
-
-// Register any test cases with the test runner
-RegisterTest(TestTTestMsg0.Suite);
-RegisterTest(TestTTestMsg1.Suite);
-
+  // Register any test cases with the test runner
+  RegisterTest('GeneratedProtoBufPas', TestTTestMsg1.Suite);
 end.
