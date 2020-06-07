@@ -151,7 +151,17 @@ end;
 
 procedure TProtoBufOutput.writeRawData(const buf; size: integer);
 begin
+  {$IFDEF MACOS}
+  //workaround for Delphi macOS64 compiler bug:
+  //https://quality.embarcadero.com/browse/RSP-29451
+  //compiler calls the wrong overload "writeRawData(const buf; size: integer)"
+  //i.e. ourself, resulting in a stack overflow; just copied the implementation
+  //of the intended overload "writeRawData(const p: Pointer; size: integer)"
+  //here
+  FBuffer.Add(@buf, size);
+  {$ELSE}
   writeRawData(@buf, size);
+  {$ENDIF MACOS}
 end;
 
 procedure TProtoBufOutput.writeRawSInt32(value: integer);
