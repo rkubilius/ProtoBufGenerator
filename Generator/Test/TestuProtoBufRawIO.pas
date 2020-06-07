@@ -457,7 +457,7 @@ const
     (bytes: ($01, $00, $00, $00, $00, $00, $00, $00, $00, $00); Size: 1; value: 1; Options: []),
     (bytes: ($7F, $00, $00, $00, $00, $00, $00, $00, $00, $00); Size: 1; value: 127; Options: []),
     (bytes: ($A2, $74, $00, $00, $00, $00, $00, $00, $00, $00); Size: 2; value: 14882; Options: []),
-    (bytes: ($FF, $FF, $FF, $FF, $07, $00, $00, $00, $00, $00); Size: 5; value: MaxLongInt; Options: []),
+    (bytes: ($FF, $FF, $FF, $FF, $07, $00, $00, $00, $00, $00); Size: 5; value: 2147483647; Options: []),
     (bytes: ($FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $01); Size: 10; value: -1; Options: []),
     (bytes: ($D5, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $01); Size: 10; value: -43; Options: []),
     (bytes: ($81, $FE, $FF, $FF, $FF, $FF, $FF, $FF, $FF, $01); Size: 10; value: -255; Options: []),
