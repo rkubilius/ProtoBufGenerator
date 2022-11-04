@@ -26,6 +26,8 @@ type
     {$ENDIF}
   strict private
     FFieldStates: TFieldStates;
+    FParentTag: Integer;
+    FParentMessage: TAbstractProtoBufClass;
     function GetFieldState(Tag: Integer): TFieldState;
     procedure AddFieldState(Tag: Integer; AFieldState: TFieldState);
     procedure ClearFieldState(Tag: Integer; AFieldState: TFieldState);
@@ -41,6 +43,10 @@ type
     function LoadSingleFieldFromBuf(ProtoBuf: TProtoBufInput; FieldNumber: integer; WireType: integer): Boolean; virtual;
     procedure SaveFieldsToBuf(ProtoBuf: TProtoBufOutput); virtual;
     procedure SaveMessageFieldToBuf(AField: TAbstractProtoBufClass; AFieldNumber: Integer; AFieldProtoBufOutput, AMainProtoBufOutput: TProtoBufOutput);
+  protected
+    // Used by ProtoBufGenerator for message type properties only
+    property ParentMessage: TAbstractProtoBufClass read FParentMessage write FParentMessage;
+    property ParentTag: Integer read FParentTag write FParentTag;
   public
     constructor Create; virtual;
     destructor Destroy; override;
@@ -172,6 +178,8 @@ begin
   {$IFDEF FPC}
   FFieldStates.Sorted:= True;
   {$ENDIF}
+  FParentMessage := nil;
+  FParentTag := 0;
 end;
 
 destructor TAbstractProtoBufClass.Destroy;
@@ -266,6 +274,9 @@ end;
 
 function TAbstractProtoBufClass.LoadSingleFieldFromBuf(ProtoBuf: TProtoBufInput; FieldNumber: integer; WireType: integer): Boolean;
 begin
+  ASSERT(ProtoBuf <> nil); // To suppress FPC hints "xxx not used"
+  ASSERT(FieldNumber > 0);
+  ASSERT(WireType >= 0);
   Result := False;
 end;
 
@@ -276,6 +287,7 @@ end;
 
 procedure TAbstractProtoBufClass.SaveFieldsToBuf(ProtoBuf: TProtoBufOutput);
 begin
+  ASSERT(ProtoBuf <> nil); // To suppress FPC hints "xxx not used"
   if not AllRequiredFieldsValid then
     raise EStreamError.CreateFmt('Saving %s: not all required fields have been set', [ClassName]);
 end;
@@ -311,8 +323,17 @@ procedure TAbstractProtoBufClass.SetFieldHasValue(Tag: Integer;
   const Value: Boolean);
 begin
   if Value then
-    AddFieldState(Tag, [fsHasValue]) else
+    AddFieldState(Tag, [fsHasValue])
+  else
     ClearFieldState(Tag, [fsHasValue]);
+
+  if Assigned(ParentMessage) and (ParentTag <> 0) then
+  begin
+    if Value and not ParentMessage.FieldHasValue[ParentTag] then
+      ParentMessage.FieldHasValue[ParentTag] := True;
+    if not Value and ParentMessage.FieldHasValue[ParentTag] then
+      ParentMessage.FieldHasValue[ParentTag] := False;
+  end;
 end;
 
 { TProtoBufList<T> }
@@ -334,7 +355,7 @@ begin
     try
       Item.LoadFromBuf(tmpBuf);
       Add(Item);
-      Item := nil;
+      Item := T(nil); // FPC >= 3.2 requires type casting of nil for generics
     finally
       Item.Free;
     end;

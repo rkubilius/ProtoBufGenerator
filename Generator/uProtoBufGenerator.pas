@@ -302,6 +302,13 @@ procedure TProtoBufGenerator.GenerateImplementationSection(Proto: TProtoFile; SL
         ParsePropType(Prop, Proto, DelphiProp);
         if DelphiProp.IsList or DelphiProp.isObject then
           SL.Add(Format('  F%s := %s.Create;', [DelphiProp.PropertyName, DelphiProp.PropertyType]));
+        if DelphiProp.isObject and not DelphiProp.IsList then
+        begin
+          SL.Add(Format('  F%s.ParentMessage := Self;', [DelphiProp.PropertyName]));
+          SL.Add(Format('  F%s.ParentTag := %s;', [DelphiProp.PropertyName, DelphiProp.tagName]));
+        end;
+        if DelphiProp.IsList then
+          SL.Add(Format('  F%s.OnNotify := %sChanged;', [DelphiProp.PropertyName, DelphiProp.PropertyName]));
         if Prop.PropOptions.HasValue['default'] then
           SL.Add(Format('  %s%s := %s;', [IfThen(DelphiProp.readOnlyDelphiProperty, 'F', ''), DelphiProp.PropertyName, ReQuoteStr(Prop.PropOptions.Value['default'])]));
         if Prop.PropKind = ptRequired then
@@ -608,6 +615,28 @@ procedure TProtoBufGenerator.GenerateImplementationSection(Proto: TProtoFile; SL
 
   end;
 
+  procedure WriteHandlerProcs(ProtoMsg: TProtoBufMessage; SL: TStrings);
+  var
+    i: Integer;
+    Prop: TProtoBufProperty;
+    DelphiProp: TDelphiProperty;
+  begin
+    for i := 0 to ProtoMsg.Count - 1 do
+      begin
+        Prop := ProtoMsg[i];
+        ParsePropType(Prop, Proto, DelphiProp);
+        if DelphiProp.IsList then
+        begin
+          SL.Add(Format('procedure T%s.%sChanged(Sender: TObject; const Item: %s; Action: TCollectionNotification);',
+            [ProtoMsg.Name, DelphiProp.PropertyName, ProtoPropTypeToDelphiType(Prop.PropType)]));
+          SL.Add('begin');
+          SL.Add(Format('  FieldHasValue[%s] := %s.Count > 0;', [DelphiProp.tagName, DelphiProp.PropertyName]));
+          SL.Add('end;');
+          SL.Add('');
+        end;
+      end;
+  end;
+
   procedure WriteMessageToSL(ProtoMsg: TProtoBufMessage; SL: TStrings);
   var
     bNeedConstructor: Boolean;
@@ -623,6 +652,7 @@ procedure TProtoBufGenerator.GenerateImplementationSection(Proto: TProtoFile; SL
     WriteLoadProc(ProtoMsg, SL);
     WriteSaveProc(ProtoMsg, SL);
     WriteSetterProcs(ProtoMsg, SL);
+    WriteHandlerProcs(ProtoMsg, SL);
   end;
 
 var
@@ -729,6 +759,17 @@ procedure TProtoBufGenerator.GenerateInterfaceSection(Proto: TProtoFile; SL: TSt
         SL.Add(Format('    F%s: %s;', [DelphiProp.PropertyName, DelphiProp.PropertyType]));
       end;
     SL.Add('');
+    //event handlers
+    for i := 0 to ProtoMsg.Count - 1 do
+      begin
+        Prop := ProtoMsg[i];
+        ParsePropType(Prop, Proto, DelphiProp);
+        if DelphiProp.IsList then
+        begin
+          SL.Add(Format('    procedure %sChanged(Sender: TObject; const Item: %s; Action: TCollectionNotification);',
+            [DelphiProp.PropertyName, ProtoPropTypeToDelphiType(Prop.PropType)]));
+        end;
+      end;
     //property setters
     for i := 0 to ProtoMsg.Count - 1 do
       begin

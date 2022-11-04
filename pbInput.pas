@@ -228,11 +228,13 @@ end;
 
 function TProtoBufInput.readDouble: double;
 begin
+  result := 0; // To suppress FPC warning "xxx does not seem to be initialized"
   readRawBytes(result, SizeOf(double));
 end;
 
 function TProtoBufInput.readFloat: single;
 begin
+  result := 0; // To suppress FPC warning "xxx does not seem to be initialized"
   readRawBytes(result, SizeOf(single));
 end;
 
@@ -372,11 +374,13 @@ end;
 
 function TProtoBufInput.readRawLittleEndian32: integer;
 begin
+  result := 0; // To suppress FPC warning "xxx does not seem to be initialized"
   readRawBytes(result, SizeOf(result));
 end;
 
 function TProtoBufInput.readRawLittleEndian64: int64;
 begin
+  result := 0; // To suppress FPC warning "xxx does not seem to be initialized"
   readRawBytes(result, SizeOf(result));
 end;
 
@@ -387,6 +391,7 @@ end;
 
 function TProtoBufInput.readRawByte: shortint;
 begin
+  result := 0; // To suppress FPC warning "xxx does not seem to be initialized"
   readRawBytes(result, 1);
 end;
 
