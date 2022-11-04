@@ -256,6 +256,6 @@ begin
     on E: Exception do
       Writeln(E.ToString);
   end;
-  Readln;
+  //Readln;
 
 end.
