@@ -11,7 +11,6 @@ interface
 uses
   SysUtils,
   Classes,
-  Generics.Collections,
   pbInput,
   pbOutput,
   pbPublic,
@@ -89,6 +88,8 @@ type
     const tag_FieldArr3List = 42;
     const tag_FieldArrE1List = 43;
     const tag_FieldMArr2List = 44;
+    const tag_FieldArr4List = 45;
+    const tag_FieldArr5List = 46;
     const tag_FieldImp1 = 50;
     const tag_FieldImp2 = 51;
   strict private
@@ -106,14 +107,23 @@ type
     FFieldE2: TEnum1;
     FFieldNested1: TTestNested1;
     FFieldNested2: TTestNested1;
-    FFieldArr1List: TList<Integer>;
-    FFieldArr2List: TList<Integer>;
-    FFieldArr3List: TList<string>;
-    FFieldArrE1List: TList<TEnum1>;
+    FFieldArr1List: TPBList<Integer>;
+    FFieldArr2List: TPBList<Integer>;
+    FFieldArr3List: TPBList<string>;
+    FFieldArrE1List: TPBList<TEnum1>;
     FFieldMArr2List: TProtoBufClassList<TTestMsg0>;
+    FFieldArr4List: TPBList<Single>;
+    FFieldArr5List: TPBList<Integer>;
     FFieldImp1: TEnumGlobal;
     FFieldImp2: TEnumGlobal;
 
+    procedure FieldArr1ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
+    procedure FieldArr2ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
+    procedure FieldArr3ListChanged(Sender: TObject; const Item: string; Action: TCollectionNotification);
+    procedure FieldArrE1ListChanged(Sender: TObject; const Item: TEnum1; Action: TCollectionNotification);
+    procedure FieldMArr2ListChanged(Sender: TObject; const Item: TTestMsg0; Action: TCollectionNotification);
+    procedure FieldArr4ListChanged(Sender: TObject; const Item: Single; Action: TCollectionNotification);
+    procedure FieldArr5ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
     procedure SetDefField1(Tag: Integer; const Value: Integer);
     procedure SetDefField2(Tag: Integer; const Value: Int64);
     procedure SetDefField3(Tag: Integer; const Value: string);
@@ -154,11 +164,13 @@ type
     property FieldNested1: TTestNested1 read FFieldNested1;
     property FieldNested2: TTestNested1 index tag_FieldNested2 read FFieldNested2 write SetFieldNested2;
     //repeated fields
-    property FieldArr1List: TList<Integer> read FFieldArr1List;
-    property FieldArr2List: TList<Integer> read FFieldArr2List;
-    property FieldArr3List: TList<string> read FFieldArr3List;
-    property FieldArrE1List: TList<TEnum1> read FFieldArrE1List;
+    property FieldArr1List: TPBList<Integer> read FFieldArr1List;
+    property FieldArr2List: TPBList<Integer> read FFieldArr2List;
+    property FieldArr3List: TPBList<string> read FFieldArr3List;
+    property FieldArrE1List: TPBList<TEnum1> read FFieldArrE1List;
     property FieldMArr2List: TProtoBufClassList<TTestMsg0> read FFieldMArr2List;
+    property FieldArr4List: TPBList<Single> read FFieldArr4List;
+    property FieldArr5List: TPBList<Integer> read FFieldArr5List;
     //fields of imported types
     property FieldImp1: TEnumGlobal index tag_FieldImp1 read FFieldImp1 write SetFieldImp1;
     property FieldImp2: TEnumGlobal index tag_FieldImp2 read FFieldImp2 write SetFieldImp2;
@@ -167,20 +179,20 @@ type
   //test proto identifier name conversion
   TTestMsg1Extension1 = class(TTestMsg1)
   public
-    const tag_field_name_test_1 = 187;
-    const tag_field_Name_test_2 = 220;
+    const tag_Field_name_test_1 = 187;
+    const tag_Field_Name_test_2 = 220;
   strict private
-    Ffield_name_test_1: Integer;
-    Ffield_Name_test_2: Integer;
+    FField_name_test_1: Integer;
+    FField_Name_test_2: Integer;
 
-    procedure Setfield_name_test_1(Tag: Integer; const Value: Integer);
-    procedure Setfield_Name_test_2(Tag: Integer; const Value: Integer);
+    procedure SetField_name_test_1(Tag: Integer; const Value: Integer);
+    procedure SetField_Name_test_2(Tag: Integer; const Value: Integer);
   strict protected
     function LoadSingleFieldFromBuf(ProtoBuf: TProtoBufInput; FieldNumber: Integer; WireType: Integer): Boolean; override;
     procedure SaveFieldsToBuf(ProtoBuf: TProtoBufOutput); override;
   public
-    property field_name_test_1: Integer index tag_field_name_test_1 read Ffield_name_test_1 write Setfield_name_test_1;
-    property field_Name_test_2: Integer index tag_field_Name_test_2 read Ffield_Name_test_2 write Setfield_Name_test_2;
+    property Field_name_test_1: Integer index tag_Field_name_test_1 read FField_name_test_1 write SetField_name_test_1;
+    property Field_Name_test_2: Integer index tag_Field_Name_test_2 read FField_Name_test_2 write SetField_Name_test_2;
   end;
 
 implementation
@@ -280,13 +292,26 @@ begin
   DefField8 := 1;
   DefField9 := 1.23e1;
   FFieldMsg1 := TTestMsg0.Create;
+  FFieldMsg1.ParentMessage := Self;
+  FFieldMsg1.ParentTag := tag_FieldMsg1;
   FieldE2 := Val2;
   FFieldNested1 := TTestNested1.Create;
-  FFieldArr1List := TList<Integer>.Create;
-  FFieldArr2List := TList<Integer>.Create;
-  FFieldArr3List := TList<string>.Create;
-  FFieldArrE1List := TList<TEnum1>.Create;
+  FFieldNested1.ParentMessage := Self;
+  FFieldNested1.ParentTag := tag_FieldNested1;
+  FFieldArr1List := TPBList<Integer>.Create;
+  FFieldArr1List.OnNotify := FieldArr1ListChanged;
+  FFieldArr2List := TPBList<Integer>.Create;
+  FFieldArr2List.OnNotify := FieldArr2ListChanged;
+  FFieldArr3List := TPBList<string>.Create;
+  FFieldArr3List.OnNotify := FieldArr3ListChanged;
+  FFieldArrE1List := TPBList<TEnum1>.Create;
+  FFieldArrE1List.OnNotify := FieldArrE1ListChanged;
   FFieldMArr2List := TProtoBufClassList<TTestMsg0>.Create;
+  FFieldMArr2List.OnNotify := FieldMArr2ListChanged;
+  FFieldArr4List := TPBList<Single>.Create;
+  FFieldArr4List.OnNotify := FieldArr4ListChanged;
+  FFieldArr5List := TPBList<Integer>.Create;
+  FFieldArr5List.OnNotify := FieldArr5ListChanged;
 end;
 
 destructor TTestMsg1.Destroy;
@@ -298,6 +323,8 @@ begin
   FFieldArr3List.Free;
   FFieldArrE1List.Free;
   FFieldMArr2List.Free;
+  FFieldArr4List.Free;
+  FFieldArr5List.Free;
   inherited;
 end;
 
@@ -354,9 +381,9 @@ begin
           begin
             tmpBuf:=ProtoBuf.ReadSubProtoBufInput;
             while tmpBuf.getPos < tmpBuf.BufSize do
-              FFieldArr2List.Add(tmpBuf.readRawVarint32);
+              FFieldArr2List.Add(tmpBuf.readInt32);
           end else
-            FFieldArr2List.Add(ProtoBuf.readRawVarint32);
+            FFieldArr2List.Add(ProtoBuf.readInt32);
         end;
       tag_FieldArr3List:
         FFieldArr3List.Add(ProtoBuf.readString);
@@ -364,6 +391,18 @@ begin
         FFieldArrE1List.Add(TEnum1(ProtoBuf.readEnum));
       tag_FieldMArr2List:
         FFieldMArr2List.AddFromBuf(ProtoBuf, fieldNumber);
+      tag_FieldArr4List:
+        begin
+          if WireType = WIRETYPE_LENGTH_DELIMITED then
+          begin
+            tmpBuf:=ProtoBuf.ReadSubProtoBufInput;
+            while tmpBuf.getPos < tmpBuf.BufSize do
+              FFieldArr4List.Add(tmpBuf.readFloat);
+          end else
+            FFieldArr4List.Add(ProtoBuf.readFloat);
+        end;
+      tag_FieldArr5List:
+        FFieldArr5List.Add(ProtoBuf.readFixed32);
       tag_FieldImp1:
         FieldImp1 := TEnumGlobal(ProtoBuf.readEnum);
       tag_FieldImp2:
@@ -403,19 +442,13 @@ begin
     if FieldHasValue[tag_DefField9] then
       ProtoBuf.writeFloat(tag_DefField9, FDefField9);
     if FieldHasValue[tag_FieldMsg1] then
-    begin
-      FFieldMsg1.SaveToBuf(tmpBuf);
-      ProtoBuf.writeMessage(tag_FieldMsg1, tmpBuf);
-    end;
+      SaveMessageFieldToBuf(FFieldMsg1, tag_FieldMsg1, tmpBuf, ProtoBuf);
     if FieldHasValue[tag_FieldE1] then
       ProtoBuf.writeInt32(tag_FieldE1, Integer(FFieldE1));
     if FieldHasValue[tag_FieldE2] then
       ProtoBuf.writeInt32(tag_FieldE2, Integer(FFieldE2));
     if FieldHasValue[tag_FieldNested1] then
-    begin
-      FFieldNested1.SaveToBuf(tmpBuf);
-      ProtoBuf.writeMessage(tag_FieldNested1, tmpBuf);
-    end;
+      SaveMessageFieldToBuf(FFieldNested1, tag_FieldNested1, tmpBuf, ProtoBuf);
     if FieldHasValue[tag_FieldNested2] then
       ProtoBuf.writeInt32(tag_FieldNested2, Integer(FFieldNested2));
     if FieldHasValue[tag_FieldArr1List] then
@@ -423,8 +456,9 @@ begin
         ProtoBuf.writeInt32(tag_FieldArr1List, FFieldArr1List[i]);
     if FieldHasValue[tag_FieldArr2List] then
     begin
+      tmpBuf.Clear;
       for i := 0 to FFieldArr2List.Count-1 do
-        tmpBuf.writeRawVarint32(FFieldArr2List[i]);
+        tmpBuf.writeRawInt32(FFieldArr2List[i]);
       ProtoBuf.writeMessage(tag_FieldArr2List, tmpBuf);
     end;
     if FieldHasValue[tag_FieldArr3List] then
@@ -435,6 +469,16 @@ begin
         ProtoBuf.writeInt32(tag_FieldArrE1List, Integer(FFieldArrE1List[i]));
     if FieldHasValue[tag_FieldMArr2List] then
       FFieldMArr2List.SaveToBuf(ProtoBuf, tag_FieldMArr2List);
+    if FieldHasValue[tag_FieldArr4List] then
+    begin
+      tmpBuf.Clear;
+      for i := 0 to FFieldArr4List.Count-1 do
+        tmpBuf.writeRawFloat(FFieldArr4List[i]);
+      ProtoBuf.writeMessage(tag_FieldArr4List, tmpBuf);
+    end;
+    if FieldHasValue[tag_FieldArr5List] then
+      for i := 0 to FFieldArr5List.Count-1 do
+        ProtoBuf.writeFixed32(tag_FieldArr5List, FFieldArr5List[i]);
     if FieldHasValue[tag_FieldImp1] then
       ProtoBuf.writeInt32(tag_FieldImp1, Integer(FFieldImp1));
     if FieldHasValue[tag_FieldImp2] then
@@ -528,6 +572,41 @@ begin
   FieldHasValue[Tag]:= True;
 end;
 
+procedure TTestMsg1.FieldArr1ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldArr1List] := FieldArr1List.Count > 0;
+end;
+
+procedure TTestMsg1.FieldArr2ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldArr2List] := FieldArr2List.Count > 0;
+end;
+
+procedure TTestMsg1.FieldArr3ListChanged(Sender: TObject; const Item: string; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldArr3List] := FieldArr3List.Count > 0;
+end;
+
+procedure TTestMsg1.FieldArrE1ListChanged(Sender: TObject; const Item: TEnum1; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldArrE1List] := FieldArrE1List.Count > 0;
+end;
+
+procedure TTestMsg1.FieldMArr2ListChanged(Sender: TObject; const Item: TTestMsg0; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldMArr2List] := FieldMArr2List.Count > 0;
+end;
+
+procedure TTestMsg1.FieldArr4ListChanged(Sender: TObject; const Item: Single; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldArr4List] := FieldArr4List.Count > 0;
+end;
+
+procedure TTestMsg1.FieldArr5ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
+begin
+  FieldHasValue[tag_FieldArr5List] := FieldArr5List.Count > 0;
+end;
+
 { TTestMsg1Extension1 }
 
 function TTestMsg1Extension1.LoadSingleFieldFromBuf(ProtoBuf: TProtoBufInput; FieldNumber: Integer; WireType: Integer): Boolean;
@@ -537,10 +616,10 @@ begin
     Exit;
   Result := True;
   case FieldNumber of
-    tag_field_name_test_1:
-      field_name_test_1 := ProtoBuf.readInt32;
-    tag_field_Name_test_2:
-      field_Name_test_2 := ProtoBuf.readInt32;
+    tag_Field_name_test_1:
+      Field_name_test_1 := ProtoBuf.readInt32;
+    tag_Field_Name_test_2:
+      Field_Name_test_2 := ProtoBuf.readInt32;
   else
     Result := False;
   end;
@@ -549,21 +628,21 @@ end;
 procedure TTestMsg1Extension1.SaveFieldsToBuf(ProtoBuf: TProtoBufOutput);
 begin
   inherited;
-  if FieldHasValue[tag_field_name_test_1] then
-    ProtoBuf.writeInt32(tag_field_name_test_1, Ffield_name_test_1);
-  if FieldHasValue[tag_field_Name_test_2] then
-    ProtoBuf.writeInt32(tag_field_Name_test_2, Ffield_Name_test_2);
+  if FieldHasValue[tag_Field_name_test_1] then
+    ProtoBuf.writeInt32(tag_Field_name_test_1, FField_name_test_1);
+  if FieldHasValue[tag_Field_Name_test_2] then
+    ProtoBuf.writeInt32(tag_Field_Name_test_2, FField_Name_test_2);
 end;
 
-procedure TTestMsg1Extension1.Setfield_name_test_1(Tag: Integer; const Value: Integer);
+procedure TTestMsg1Extension1.SetField_name_test_1(Tag: Integer; const Value: Integer);
 begin
-  Ffield_name_test_1:= Value;
+  FField_name_test_1:= Value;
   FieldHasValue[Tag]:= True;
 end;
 
-procedure TTestMsg1Extension1.Setfield_Name_test_2(Tag: Integer; const Value: Integer);
+procedure TTestMsg1Extension1.SetField_Name_test_2(Tag: Integer; const Value: Integer);
 begin
-  Ffield_Name_test_2:= Value;
+  FField_Name_test_2:= Value;
   FieldHasValue[Tag]:= True;
 end;
 

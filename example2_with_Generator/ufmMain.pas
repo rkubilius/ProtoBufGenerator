@@ -62,6 +62,11 @@ begin
       Assert(TestMsg1.DefField9 = 1.5, 'Wrong value in DefField9');
       Assert(TestMsg1.FieldArr1List.Count = 1, 'Wrong count in FieldArr1List');
       Assert(TestMsg1.FieldArr1List[0] = 743, 'Wrong value in FieldArr1List[0]');
+      Assert(TestMsg1.FieldArr4List.Count = 2, 'Wrong count in FieldArr4List');
+      Assert(TestMsg1.FieldArr4List[0] = Single(3.14), 'Wrong value in FieldArr4List[0]');
+      Assert(TestMsg1.FieldArr4List[1] = Single(-0.25), 'Wrong value in FieldArr4List[1]');
+      Assert(TestMsg1.FieldArr5List.Count = 1, 'Wrong count in FieldArr5List');
+      Assert(TestMsg1.FieldArr5List[0] = $11BB11BB, 'Wrong value in FieldArr5List[0]');
       Assert(TestMsg1.FieldImp1 = gVal1, 'Wrong value in FieldImp1');
     finally
       TestMsg1.Free;
@@ -104,7 +109,9 @@ begin
       TestMsg1.DefField1 := 20;
       TestMsg1.DefField9 := 1.5;
       TestMsg1.FieldArr1List.Add(743);
-      TestMsg1.FieldHasValue[TTestMsg1.tag_FieldArr1List]:= True;
+      TestMsg1.FieldArr4List.Add(3.14);
+      TestMsg1.FieldArr4List.Add(-0.25);
+      TestMsg1.FieldArr5List.Add($11BB11BB);
       TestMsg1.FieldImp1 := gVal1;
 
       // and now save data
@@ -140,8 +147,6 @@ procedure TForm15.btnSpeedTestClick(Sender: TObject);
   var
     i: Integer;
   begin
-    msg.FieldHasValue[TTestMsg1.tag_FieldArr3List]:= True;
-    msg.FieldHasValue[TTestMsg1.tag_FieldArr1List]:= True;
     for i := 0 to 9999 do
       begin
         msg.FieldArr3List.Add('foo some long-long value '+IntToStr(i));

@@ -46,7 +46,7 @@ type
     procedure writeFloat(fieldNumber: integer; value: single);
     (* Write a int64 field, including tag. *)
     procedure writeInt64(fieldNumber: integer; value: int64);
-    (* Write a int64 field, including tag. *)
+    (* Write a int32 field, including tag. *)
     procedure writeInt32(fieldNumber: integer; value: integer);
     (* Write a fixed64 field, including tag. *)
     procedure writeFixed64(fieldNumber: integer; value: int64);
@@ -57,7 +57,6 @@ type
     (* Write a sfixed32 field, including tag. *)
     procedure writeSFixed32(fieldNumber: integer; value: integer);
     (* Write a boolean field, including tag. *)
-    procedure writeRawBoolean(value: Boolean);
     procedure writeBoolean(fieldNumber: integer; value: Boolean);
     (* Write a string field, including tag. *)
     procedure writeString(fieldNumber: integer; const value: string);
@@ -67,11 +66,24 @@ type
     procedure writeMessage(fieldNumber: integer; const value: IpbMessage);
     (* Write a unsigned int32 field, including tag. *)
     procedure writeUInt32(fieldNumber: integer; value: cardinal);
-
-    procedure writeRawSInt32(value: integer);
-    procedure writeRawSInt64(value: int64);
+    (* Write a signed int32 field, including tag. *)
     procedure writeSInt32(fieldNumber: integer; value: integer);
+    (* Write a signed int64 field, including tag. *)
     procedure writeSInt64(fieldNumber: integer; value: int64);
+
+    procedure writeRawInt32(value: Integer);
+    procedure writeRawSInt32(value: integer);
+    procedure writeRawUInt32(value: Cardinal);
+    procedure writeRawInt64(value: Int64);
+    procedure writeRawSInt64(value: int64);
+    procedure writeRawFloat(value: Single);
+    procedure writeRawDouble(value: Double);
+    procedure writeRawBoolean(value: Boolean);
+    procedure writeRawFixed32(value: Integer);
+    procedure writeRawFixed64(value: Int64);
+    procedure writeRawSFixed32(value: Integer);
+    procedure writeRawSFixed64(value: Int64);
+
     (* Get serialized size *)
     function getSerializedSize: integer;
     (* Write to buffer *)
@@ -164,6 +176,46 @@ begin
   {$ENDIF MACOS}
 end;
 
+procedure TProtoBufOutput.writeRawDouble(value: Double);
+begin
+  writeRawData(@value, SizeOf(value));
+end;
+
+procedure TProtoBufOutput.writeRawFixed32(value: Integer);
+begin
+  writeRawData(@value, SizeOf(value));
+end;
+
+procedure TProtoBufOutput.writeRawFixed64(value: Int64);
+begin
+  writeRawData(@value, SizeOf(value));
+end;
+
+procedure TProtoBufOutput.writeRawFloat(value: Single);
+begin
+  writeRawData(@value, SizeOf(value));
+end;
+
+procedure TProtoBufOutput.writeRawInt32(value: Integer);
+begin
+  writeRawVarint32(value);
+end;
+
+procedure TProtoBufOutput.writeRawInt64(value: Int64);
+begin
+  writeRawVarint64(value);
+end;
+
+procedure TProtoBufOutput.writeRawSFixed32(value: Integer);
+begin
+  writeRawData(@value, SizeOf(value));
+end;
+
+procedure TProtoBufOutput.writeRawSFixed64(value: Int64);
+begin
+  writeRawData(@value, SizeOf(value));
+end;
+
 procedure TProtoBufOutput.writeRawSInt32(value: integer);
 begin
   writeRawVarint32(EncodeZigZag32(value));
@@ -172,6 +224,11 @@ end;
 procedure TProtoBufOutput.writeRawSInt64(value: int64);
 begin
   writeRawVarint64(EncodeZigZag64(value));
+end;
+
+procedure TProtoBufOutput.writeRawUInt32(value: Cardinal);
+begin
+  writeRawVarint32(value);
 end;
 
 procedure TProtoBufOutput.writeRawData(const p: Pointer; size: integer);

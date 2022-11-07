@@ -65,3 +65,7 @@ __recovery/
 # Castalia statistics file (since XE7 Castalia is distributed with Delphi)
 *.stat
 ProtoBufGeneratorTestsFPC
+
+# Everything in the output directory except the *.proto files
+/Ready/*
+!/Ready/*.proto

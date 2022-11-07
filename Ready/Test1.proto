@@ -55,6 +55,8 @@ message TestMsg1 {
     repeated string   FieldArr3  = 42;
     repeated Enum1    FieldArrE1 = 43;
     repeated TestMsg0 FieldMArr2 = 44;
+    repeated float    FieldArr4  = 45 [packed = true];
+    repeated fixed32  FieldArr5  = 46;
 
     // fields of imported types
     optional TestImport1.EnumGlobal FieldImp1 = 50;

@@ -7,12 +7,14 @@ uses
   System.SysUtils,
   System.Classes,
   System.Generics.Collections,
-  uProtoBufGenerator,
   uAbstractProtoBufClasses in '..\uAbstractProtoBufClasses.pas',
   StrBuffer in '..\StrBuffer.pas',
   pbPublic in '..\pbPublic.pas',
   pbOutput in '..\pbOutput.pas',
-  pbInput in '..\pbInput.pas';
+  pbInput in '..\pbInput.pas',
+  uProtoBufGenerator in 'uProtoBufGenerator.pas',
+  uProtoBufParserClasses in 'uProtoBufParserClasses.pas',
+  uProtoBufParserAbstractClasses in 'uProtoBufParserAbstractClasses.pas';
 
 { keys:
   /h /help - print help page

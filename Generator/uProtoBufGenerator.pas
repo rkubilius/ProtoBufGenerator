@@ -78,79 +78,37 @@ end;
 function GetProtoBufMethodForScalarType(const Prop: TProtoBufProperty): string;
 var
   StandartType: TScalarPropertyType;
-  bPacked: Boolean;
 begin
   StandartType := StrToPropertyType(Prop.PropType);
-  bPacked := (Prop.PropKind = ptRepeated) and PropertyIsPrimitiveNumericPacked(Prop);
-
   case StandartType of
     sptComplex:
       ;
     sptDouble:
-      if bPacked then
-        Result := 'RawData'
-      else
-        Result := 'Double';
+      Result := 'Double';
     sptFloat:
-      if bPacked then
-        Result := 'RawData'
-      else
-        Result := 'Float';
+      Result := 'Float';
     sptInt32:
-      if bPacked then
-        Result := 'RawVarint32'
-      else
-        Result := 'Int32';
+      Result := 'Int32';
     sptInt64:
-      if bPacked then
-        Result := 'RawVarint64'
-      else
-        Result := 'Int64';
+      Result := 'Int64';
     sptuInt32:
-      if bPacked then
-        Result := 'RawVarint32'
-      else
-        Result := 'UInt32';
+      Result := 'UInt32';
     sptUint64:
-      if bPacked then
-        Result := 'RawVarint64'
-      else
-        Result := 'Int64';
+      Result := 'Int64';
     sptSInt32:
-      if bPacked then
-        Result := 'RawSInt32'
-      else
-        Result := 'SInt32';
+      Result := 'SInt32';
     sptSInt64:
-      if bPacked then
-        Result := 'RawSInt64'
-      else
-        Result := 'SInt64';
+      Result := 'SInt64';
     sptFixed32:
-      if bPacked then
-        Result := 'RawData'
-      else
-        Result := 'Fixed32';
+      Result := 'Fixed32';
     sptFixed64:
-      if bPacked then
-        Result := 'RawData'
-      else
-        Result := 'Fixed64';
+      Result := 'Fixed64';
     sptSFixed32:
-      if bPacked then
-        Result := 'RawData'
-      else
-        Result := 'SFixed32';
+      Result := 'SFixed32';
     sptSFixed64:
-      if bPacked then
-        Result := 'RawData'
-      else
-        Result := 'SFixed64';
+      Result := 'SFixed64';
     sptBool:
-      if bPacked then
-        Result := 'RawBoolean'
-      else
-        Result := 'Boolean';
+      Result := 'Boolean';
     sptString:
       Result := 'String';
     sptBytes:
@@ -500,7 +458,7 @@ procedure TProtoBufGenerator.GenerateImplementationSection(Proto: TProtoFile; SL
                     SL.Add(       '  begin');
                     SL.Add(       '    tmpBuf.Clear;');
                     SL.Add(Format('    for i := 0 to F%s.Count-1 do', [DelphiProp.PropertyName]));
-                    SL.Add(Format('      tmpBuf.write%s(F%s[i]);', [GetProtoBufMethodForScalarType(Prop), DelphiProp.PropertyName]));
+                    SL.Add(Format('      tmpBuf.writeRaw%s(F%s[i]);', [GetProtoBufMethodForScalarType(Prop), DelphiProp.PropertyName]));
                     SL.Add(Format('    ProtoBuf.writeMessage(%s, tmpBuf);', [DelphiProp.tagName]));
                     SL.Add(       '  end;');
                   end

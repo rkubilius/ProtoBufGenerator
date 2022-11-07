@@ -23,7 +23,7 @@ type
     sptFloat, //
     sptInt32, //
     sptInt64, //
-    sptuInt32, //
+    sptUInt32, //
     sptUint64, //
     sptSInt32, //
     sptSInt64, //

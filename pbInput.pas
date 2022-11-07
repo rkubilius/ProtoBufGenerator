@@ -87,8 +87,6 @@ type
     function readFixed64: int64;
     // Read a fixed32 field value
     function readFixed32: integer;
-
-    function readRawBoolean: boolean;
     // Read a boolean field value
     function readBoolean: boolean;
     // Read a UTF8 string field value
@@ -109,6 +107,7 @@ type
     function readSInt32: integer;
     // Read an sint64 field value
     function readSInt64: int64;
+
     // Read a raw Varint from the stream. If larger than 32 bits, discard the upper bits
     function readRawVarint32: integer;
     // Read a raw Varint
@@ -123,6 +122,9 @@ type
     procedure readRawBytes(var data; size: integer);
     // Skip "size" bytes
     procedure skipRawBytes(size: integer);
+    // Read a boolean field value
+    function readRawBoolean: boolean;
+
 
     function ReadSubProtoBufInput: TProtoBufInput;
 
