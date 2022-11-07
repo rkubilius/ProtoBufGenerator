@@ -17,7 +17,7 @@ uses
   uAbstractProtoBufClasses;
 
 type
-  TEnumGlobal=(
+  TEnumGlobal = (
     gVal1 = 1,
     gVal2 = 2
   );

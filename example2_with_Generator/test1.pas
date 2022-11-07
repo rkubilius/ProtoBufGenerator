@@ -19,13 +19,13 @@ uses
 
 type
   //enumeration
-  TEnumG0=(
+  TEnumG0 = (
     g1 = 1,
     g2 = 2
   );
 
   //nested enumeration
-  TEnum1=(
+  TEnum1 = (
     Val1 = 1,
     Val2 = 2
   );
@@ -238,14 +238,14 @@ end;
 
 procedure TTestMsg0.SetField1(Tag: Integer; const Value: Integer);
 begin
-  FField1:= Value;
-  FieldHasValue[Tag]:= True;
+  FField1 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg0.SetField2(Tag: Integer; const Value: Int64);
 begin
-  FField2:= Value;
-  FieldHasValue[Tag]:= True;
+  FField2 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 { TTestNested1 }
@@ -273,8 +273,8 @@ end;
 
 procedure TTestNested1.SetField1(Tag: Integer; const Value: Integer);
 begin
-  FField1:= Value;
-  FieldHasValue[Tag]:= True;
+  FField1 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 { TTestMsg1 }
@@ -336,7 +336,7 @@ begin
   if Result then
     Exit;
   Result := True;
-  tmpBuf:= nil;
+  tmpBuf := nil;
   try
     case FieldNumber of
       tag_DefField1:
@@ -379,10 +379,11 @@ begin
         begin
           if WireType = WIRETYPE_LENGTH_DELIMITED then
           begin
-            tmpBuf:=ProtoBuf.ReadSubProtoBufInput;
+            tmpBuf := ProtoBuf.ReadSubProtoBufInput;
             while tmpBuf.getPos < tmpBuf.BufSize do
               FFieldArr2List.Add(tmpBuf.readInt32);
-          end else
+          end
+          else
             FFieldArr2List.Add(ProtoBuf.readInt32);
         end;
       tag_FieldArr3List:
@@ -395,10 +396,11 @@ begin
         begin
           if WireType = WIRETYPE_LENGTH_DELIMITED then
           begin
-            tmpBuf:=ProtoBuf.ReadSubProtoBufInput;
+            tmpBuf := ProtoBuf.ReadSubProtoBufInput;
             while tmpBuf.getPos < tmpBuf.BufSize do
               FFieldArr4List.Add(tmpBuf.readFloat);
-          end else
+          end
+          else
             FFieldArr4List.Add(ProtoBuf.readFloat);
         end;
       tag_FieldArr5List:
@@ -421,7 +423,7 @@ var
   i: Integer;
 begin
   inherited;
-  tmpBuf:= TProtoBufOutput.Create;
+  tmpBuf := TProtoBufOutput.Create;
   try
     if FieldHasValue[tag_DefField1] then
       ProtoBuf.writeInt32(tag_DefField1, FDefField1);
@@ -452,32 +454,32 @@ begin
     if FieldHasValue[tag_FieldNested2] then
       ProtoBuf.writeInt32(tag_FieldNested2, Integer(FFieldNested2));
     if FieldHasValue[tag_FieldArr1List] then
-      for i := 0 to FFieldArr1List.Count-1 do
+      for i := 0 to FFieldArr1List.Count - 1 do
         ProtoBuf.writeInt32(tag_FieldArr1List, FFieldArr1List[i]);
     if FieldHasValue[tag_FieldArr2List] then
     begin
       tmpBuf.Clear;
-      for i := 0 to FFieldArr2List.Count-1 do
+      for i := 0 to FFieldArr2List.Count - 1 do
         tmpBuf.writeRawInt32(FFieldArr2List[i]);
       ProtoBuf.writeMessage(tag_FieldArr2List, tmpBuf);
     end;
     if FieldHasValue[tag_FieldArr3List] then
-      for i := 0 to FFieldArr3List.Count-1 do
+      for i := 0 to FFieldArr3List.Count - 1 do
         ProtoBuf.writeString(tag_FieldArr3List, FFieldArr3List[i]);
     if FieldHasValue[tag_FieldArrE1List] then
-      for i := 0 to FFieldArrE1List.Count-1 do
+      for i := 0 to FFieldArrE1List.Count - 1 do
         ProtoBuf.writeInt32(tag_FieldArrE1List, Integer(FFieldArrE1List[i]));
     if FieldHasValue[tag_FieldMArr2List] then
       FFieldMArr2List.SaveToBuf(ProtoBuf, tag_FieldMArr2List);
     if FieldHasValue[tag_FieldArr4List] then
     begin
       tmpBuf.Clear;
-      for i := 0 to FFieldArr4List.Count-1 do
+      for i := 0 to FFieldArr4List.Count - 1 do
         tmpBuf.writeRawFloat(FFieldArr4List[i]);
       ProtoBuf.writeMessage(tag_FieldArr4List, tmpBuf);
     end;
     if FieldHasValue[tag_FieldArr5List] then
-      for i := 0 to FFieldArr5List.Count-1 do
+      for i := 0 to FFieldArr5List.Count - 1 do
         ProtoBuf.writeFixed32(tag_FieldArr5List, FFieldArr5List[i]);
     if FieldHasValue[tag_FieldImp1] then
       ProtoBuf.writeInt32(tag_FieldImp1, Integer(FFieldImp1));
@@ -490,86 +492,86 @@ end;
 
 procedure TTestMsg1.SetDefField1(Tag: Integer; const Value: Integer);
 begin
-  FDefField1:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField1 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField2(Tag: Integer; const Value: Int64);
 begin
-  FDefField2:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField2 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField3(Tag: Integer; const Value: string);
 begin
-  FDefField3:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField3 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField4(Tag: Integer; const Value: Double);
 begin
-  FDefField4:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField4 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField5(Tag: Integer; const Value: Boolean);
 begin
-  FDefField5:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField5 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField6(Tag: Integer; const Value: TEnumG0);
 begin
-  FDefField6:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField6 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField7(Tag: Integer; const Value: Int64);
 begin
-  FDefField7:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField7 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField8(Tag: Integer; const Value: Integer);
 begin
-  FDefField8:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField8 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetDefField9(Tag: Integer; const Value: Single);
 begin
-  FDefField9:= Value;
-  FieldHasValue[Tag]:= True;
+  FDefField9 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetFieldE1(Tag: Integer; const Value: TEnum1);
 begin
-  FFieldE1:= Value;
-  FieldHasValue[Tag]:= True;
+  FFieldE1 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetFieldE2(Tag: Integer; const Value: TEnum1);
 begin
-  FFieldE2:= Value;
-  FieldHasValue[Tag]:= True;
+  FFieldE2 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetFieldNested2(Tag: Integer; const Value: TTestNested1);
 begin
-  FFieldNested2:= Value;
-  FieldHasValue[Tag]:= True;
+  FFieldNested2 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetFieldImp1(Tag: Integer; const Value: TEnumGlobal);
 begin
-  FFieldImp1:= Value;
-  FieldHasValue[Tag]:= True;
+  FFieldImp1 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.SetFieldImp2(Tag: Integer; const Value: TEnumGlobal);
 begin
-  FFieldImp2:= Value;
-  FieldHasValue[Tag]:= True;
+  FFieldImp2 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1.FieldArr1ListChanged(Sender: TObject; const Item: Integer; Action: TCollectionNotification);
@@ -636,14 +638,14 @@ end;
 
 procedure TTestMsg1Extension1.SetField_name_test_1(Tag: Integer; const Value: Integer);
 begin
-  FField_name_test_1:= Value;
-  FieldHasValue[Tag]:= True;
+  FField_name_test_1 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 procedure TTestMsg1Extension1.SetField_Name_test_2(Tag: Integer; const Value: Integer);
 begin
-  FField_Name_test_2:= Value;
-  FieldHasValue[Tag]:= True;
+  FField_Name_test_2 := Value;
+  FieldHasValue[Tag] := True;
 end;
 
 end.
