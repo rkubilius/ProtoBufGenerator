@@ -66,6 +66,8 @@ type
     procedure writeMessage(fieldNumber: integer; const value: IpbMessage);
     (* Write a unsigned int32 field, including tag. *)
     procedure writeUInt32(fieldNumber: integer; value: cardinal);
+    (* Write a unsigned int64 field, including tag. *)
+    procedure writeUInt64(fieldNumber: Integer; value: UInt64);
     (* Write a signed int32 field, including tag. *)
     procedure writeSInt32(fieldNumber: integer; value: integer);
     (* Write a signed int64 field, including tag. *)
@@ -363,6 +365,12 @@ procedure TProtoBufOutput.writeUInt32(fieldNumber: integer; value: cardinal);
 begin
   writeTag(fieldNumber, WIRETYPE_VARINT);
   writeRawVarint32(value);
+end;
+
+procedure TProtoBufOutput.writeUInt64(fieldNumber: Integer; value: UInt64);
+begin
+  writeTag(fieldNumber, WIRETYPE_VARINT);
+  writeRawVarint64(value);
 end;
 
 procedure TProtoBufOutput.writeMessage(fieldNumber: integer; const value: IpbMessage);

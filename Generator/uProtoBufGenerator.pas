@@ -94,7 +94,7 @@ begin
     sptuInt32:
       Result := 'UInt32';
     sptUint64:
-      Result := 'Int64';
+      Result := 'UInt64';
     sptSInt32:
       Result := 'SInt32';
     sptSInt64:

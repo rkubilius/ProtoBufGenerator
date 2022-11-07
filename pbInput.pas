@@ -96,7 +96,9 @@ type
     // Read nested message
     procedure readMessage(builder: IBuilder; extensionRegistry: IExtensionRegistry);
     // Read a uint32 field value
-    function readUInt32: integer;
+    function readUInt32: Cardinal;
+    // Read a uint64 field value
+    function readUInt64: UInt64;
     // Read a enum field value
     function readEnum: integer;
     // Read an sfixed32 field value
@@ -318,9 +320,14 @@ begin
   dec(FRecursionDepth);
 end;
 
-function TProtoBufInput.readUInt32: integer;
+function TProtoBufInput.readUInt32: Cardinal;
 begin
   result := readRawVarint32;
+end;
+
+function TProtoBufInput.readUInt64: UInt64;
+begin
+  result := readRawVarint64;
 end;
 
 function TProtoBufInput.readEnum: integer;
