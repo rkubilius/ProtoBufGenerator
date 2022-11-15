@@ -89,7 +89,7 @@ type
     function readFixed32: integer;
     // Read a boolean field value
     function readBoolean: boolean;
-    // Read a UTF8 string field value
+    // Read a string field value
     function readString: string;
     // read bytes field value
     function readBytes: TBytes;
@@ -273,6 +273,7 @@ var
 begin
   size := readRawVarint32;
   Assert(size >= 0, ProtoBufException + 'readBytes (size < 0)');
+  result := nil;
   SetLength(result, size);
   if size > 0 then
     readRawBytes(result[0], size);
@@ -287,9 +288,10 @@ begin
   Assert(size >= 0, ProtoBufException + 'readString (size < 0)');
   if size > 0 then
     begin
+      buf := nil;
       SetLength(buf, size);
       readRawBytes(buf[0], size);
-      result := TEncoding.UTF8.GetString(buf);
+      result := string(TEncoding.UTF8.GetString(buf));
     end
   else
     result := '';

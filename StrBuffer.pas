@@ -147,6 +147,7 @@ end;
 
 function TStrBuffer.GetText: AnsiString;
 begin
+  result := '';
   SetLength(result, FCount);
   System.Move(FBuff^, Pointer(result)^, FCount);
 end;

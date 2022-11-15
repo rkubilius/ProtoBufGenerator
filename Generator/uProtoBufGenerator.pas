@@ -587,7 +587,7 @@ procedure TProtoBufGenerator.GenerateImplementationSection(Proto: TProtoFile; SL
         ParsePropType(Prop, Proto, DelphiProp);
         if DelphiProp.IsList then
         begin
-          SL.Add(Format('procedure T%s.%sChanged(Sender: TObject; const Item: %s; Action: TCollectionNotification);',
+          SL.Add(Format('procedure T%s.%sChanged(Sender: TObject; {$IFDEF FPC}constref{$ELSE}const{$ENDIF} Item: %s; Action: TCollectionNotification);',
             [ProtoMsg.Name, DelphiProp.PropertyName, ProtoPropTypeToDelphiType(Prop.PropType)]));
           SL.Add('begin');
           SL.Add(Format('  FieldHasValue[%s] := %s.Count > 0;', [DelphiProp.tagName, DelphiProp.PropertyName]));
@@ -726,7 +726,7 @@ procedure TProtoBufGenerator.GenerateInterfaceSection(Proto: TProtoFile; SL: TSt
         ParsePropType(Prop, Proto, DelphiProp);
         if DelphiProp.IsList then
         begin
-          SL.Add(Format('    procedure %sChanged(Sender: TObject; const Item: %s; Action: TCollectionNotification);',
+          SL.Add(Format('    procedure %sChanged(Sender: TObject; {$IFDEF FPC}constref{$ELSE}const{$ENDIF} Item: %s; Action: TCollectionNotification);',
             [DelphiProp.PropertyName, ProtoPropTypeToDelphiType(Prop.PropType)]));
         end;
       end;
@@ -807,9 +807,14 @@ begin
   SL.Add('//        kami-soft 2016-2017');
   SL.Add('// ***********************************');
   SL.Add('');
+  SL.Add('{$IFDEF FPC}');
+  SL.Add('  {$mode delphi}');
+  SL.Add('{$ENDIF}');
+  SL.Add('');
   SL.Add('uses');
   SL.Add('  SysUtils,');
   SL.Add('  Classes,');
+  SL.Add('  Generics.Collections,');
   SL.Add('  pbInput,');
   SL.Add('  pbOutput,');
   SL.Add('  pbPublic,');

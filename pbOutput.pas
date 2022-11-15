@@ -355,7 +355,9 @@ var
   buf: TBytes;
 begin
   writeTag(fieldNumber, WIRETYPE_LENGTH_DELIMITED);
+  {$WARNINGS OFF} // FPC: Implicit conversion from AnsiString to UnicodeString
   buf := TEncoding.UTF8.GetBytes(value);
+  {$WARNINGS ON}
   writeRawVarint32(length(buf));
   if length(buf) > 0 then
     writeRawData(buf[0], length(buf));
